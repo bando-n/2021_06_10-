@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>ぐるなび API</h1>
+    <button id="btn">データ取得</button>
+    <div id="output"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- axiosライブラリの読み込み -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        //リクエストを送るURLを準備準備
+        const url = 'https://www.googleapis.com/books/v1/volumes?q=intitle:ラーメン';
+        //const url = 'https://www.apibank.jp/ApiBank/api/detail?api_no=203&api_type=A';
+        //const url = 'https://api.gnavi.co.jp/master/GAreaLargeSearchAPI/v3/'
+        //const url = 'https://api.gnavi.co.jp/master/AreaSearchAPI/v3/?keyid=295157a57863d6edb5c2cd7232c0c5d5&lang='
+        //const url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/'
+        //const url = 'http://developer.hatena.ne.jp/ja/documents/shorturl/apis/redirectto'
+        //const url = 'https://api.nhk.or.jp/v2/pg/list/{area}/{service}/{date}.json?key={apikey}'
+        //const url = 'http://htn.to/AYL56j'
+
+
+        //ボタンをクリックした時にデータを取得
+        axios.get(url)
+            .then(function (response) {
+                // リクエスト成功時の処理(responseに結果が入っている)
+                console.log(response.data.items);
+                const array = [];
+                response.data.items.forEach(function (x) {
+                    array.push(`
+            <a href ="${x.volumeInfo.previewLink}">
+            <img src="${x.volumeInfo?.imageLinks?.thumbnail}">
+              </a>
+            `);
+                });
+                $('#output').html(array);
+            }).catch(function (error) {
+                // リクエスト失敗時の処理(errorにエラー内容が入っている)
+                console.log(error);
+            }).finally(function () {
+                // 成功失敗に関わらず必ず実行
+                console.log('done!');
+            });
+
+    </script>
+
+</body>
+
+</html>
